@@ -9,6 +9,7 @@ Werkzeug==2.3.6
 # XRPL Integration
 xrpl-py==2.1.0
 websockets==10.4  # Required by xrpl-py (must be <11.0)
+websocket-client==1.6.1  # For WebSocketApp in app.py
 
 # Forms and Validation
 WTForms==3.0.1
