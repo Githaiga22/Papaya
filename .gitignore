@@ -1,0 +1,56 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+.venv
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+mydb.db*
+
+# Environment variables
+.env
+.env.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Documentation (exclude from repo)
+POOL-ARCHITECTURE-EXPLAINED.md
+UPDATES-SUMMARY.md
+FINAL-SUMMARY.md
+NEW-SIMPLIFIED-REGISTRATION.md
+NEXT-STEPS.md
+TESTNET-VERIFICATION.md
+QUICKSTART.md
+summary.md
+userflow.md
+credentials.md
+
+# Logs
+*.log
+/tmp/
+logs/
+
+# Wallet files (sensitive)
+wallets/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.bak
+*.swp
