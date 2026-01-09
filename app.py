@@ -21,6 +21,7 @@ from flask import Flask, render_template, request, flash, redirect, url_for, ses
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 from flask_socketio import SocketIO, join_room, leave_room, emit
 import json
+import os
 import random
 import threading
 import websocket
@@ -64,7 +65,8 @@ wallet_filename = 'wallets/wallet_mm.json'
 transaction_pool = []
 liquidation_threshold = 1.3 # Collateral can't be less than 133% of borrrowed
 asset_prices = get_exchange_rates()
-with open("assets.json", "r") as f:
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+with open(os.path.join(BASE_DIR, "assets.json"), "r") as f:
     assets = json.load(f)
 
 def mm_url_for(endpoint, **values):

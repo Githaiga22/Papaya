@@ -11,8 +11,10 @@ from flask_login import LoginManager, UserMixin, login_user, login_required, log
 from wtforms import SelectField, DecimalField, SubmitField, FloatField, SubmitField, RadioField
 from wtforms.validators import DataRequired, NumberRange
 import json
+import os
 
-with open("assets.json", "r") as f:
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+with open(os.path.join(BASE_DIR, "assets.json"), "r") as f:
     assets = json.load(f)
 
 # Convert assets list to the format needed for SelectField choices
