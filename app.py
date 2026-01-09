@@ -32,7 +32,7 @@ from xrpl.utils import xrp_to_drops
 from xrpl.transaction import submit_and_wait, sign_and_submit
 from xrpl.models.transactions import Payment
 from xrpl.models import IssuedCurrencyAmount, Payment
-import numpy as np
+import math
 from datetime import datetime
 from apscheduler.schedulers.background import BackgroundScheduler
 import os
@@ -141,7 +141,7 @@ def calculate_interest_rate(utilization_rate):
         return 3 + (utilization_rate * (20 - 3) / 0.9)
     else:
         # Assumes that the rate grows exponentially as per e^(40*(utilization_rate-0.9))
-        return np.exp(40 * (utilization_rate - 0.9))
+        return math.exp(40 * (utilization_rate - 0.9))
 
 def calculate_apy(supplied, borrowed):
     utilization_rate = borrowed / supplied
