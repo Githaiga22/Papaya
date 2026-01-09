@@ -52,7 +52,10 @@ mm_blueprint = Blueprint('mm', __name__, template_folder='templates', static_fol
 app = Flask(__name__)
 
 load_dotenv()
-app.secret_key = os.getenv("DEV_KEY")
+app.secret_key = os.getenv("SECRET_KEY") or os.getenv("DEV_KEY")
+if not app.secret_key:
+    app.secret_key = os.urandom(32)
+    logging.warning("SECRET_KEY not set; using a random session key for this run.")
 pending_confirmations = {}  #
 login_manager = LoginManager()
 login_manager.init_app(app)

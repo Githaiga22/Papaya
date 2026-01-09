@@ -42,3 +42,361 @@
 .form-group .btn-group-toggle {
     margin-top: 0.5rem;
 }
+
+:root {
+    --papaya-orange: #f28c28;
+    --papaya-amber: #ffb347;
+    --papaya-divider: #e6e6e6;
+}
+
+.papaya-hero {
+    padding: 96px 0 48px;
+    background-color: #ffffff;
+    position: relative;
+    overflow: hidden;
+}
+
+.papaya-hero::before {
+    content: "";
+    position: absolute;
+    top: 24px;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--papaya-orange), var(--papaya-amber));
+}
+
+.papaya-eyebrow {
+    font-size: 0.85rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+}
+
+.papaya-title {
+    font-size: 2.6rem;
+    line-height: 1.2;
+    margin-bottom: 16px;
+    font-weight: 600;
+}
+
+.papaya-lead {
+    font-size: 1.05rem;
+    margin-bottom: 0;
+    max-width: 560px;
+}
+
+.papaya-illustration {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    border: 1px solid var(--papaya-divider);
+    border-radius: 18px;
+    background: #ffffff;
+}
+
+.papaya-notice {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    border-top: 1px solid var(--papaya-divider);
+    border-bottom: 1px solid var(--papaya-divider);
+    padding: 12px 0;
+    margin-top: 12px;
+    margin-bottom: 12px;
+    font-size: 0.95rem;
+}
+
+.papaya-notice-links {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.papaya-link {
+    color: var(--papaya-orange);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.papaya-link:hover {
+    color: var(--papaya-amber);
+    text-decoration: none;
+}
+
+.papaya-divider {
+    color: #000000;
+    opacity: 0.4;
+}
+
+.papaya-section {
+    padding: 24px 0 72px;
+}
+
+.papaya-card {
+    border: 1px solid var(--papaya-divider);
+    border-radius: 18px;
+    background: #ffffff;
+    overflow: hidden;
+}
+
+.papaya-card-header {
+    padding: 20px 24px;
+    border-bottom: 1px solid var(--papaya-divider);
+}
+
+.papaya-section-title {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 600;
+}
+
+.papaya-table {
+    margin-bottom: 0;
+    width: 100%;
+}
+
+.papaya-table thead th {
+    border-bottom: 1px solid var(--papaya-divider);
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+}
+
+.papaya-table td,
+.papaya-table th {
+    vertical-align: middle;
+    border-top: 1px solid var(--papaya-divider);
+    padding: 16px 20px;
+    white-space: normal;
+    word-break: break-word;
+}
+
+.papaya-table-compact td,
+.papaya-table-compact th {
+    padding: 12px 14px;
+    font-size: 0.92rem;
+}
+
+.papaya-table-compact .papaya-market {
+    white-space: nowrap;
+    min-width: 120px;
+}
+
+.papaya-table-compact .papaya-asset-name {
+    white-space: nowrap;
+}
+
+.papaya-table-compact .papaya-button,
+.papaya-table-compact .papaya-button-ghost {
+    white-space: nowrap;
+    min-width: 92px;
+}
+
+.papaya-table-compact .papaya-actions {
+    flex-wrap: nowrap;
+}
+
+.papaya-table-stretch {
+    width: 100%;
+    table-layout: auto;
+}
+
+
+.papaya-table-compact .papaya-asset-icon {
+    width: 28px;
+    height: 28px;
+    font-size: 0.8rem;
+}
+
+.papaya-table-compact .papaya-actions {
+    gap: 8px;
+}
+
+.papaya-table-compact .papaya-button {
+    padding: 6px 12px;
+    font-size: 0.82rem;
+}
+
+.papaya-market {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.papaya-asset-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 1px solid var(--papaya-orange);
+    color: var(--papaya-orange);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.papaya-asset-name {
+    font-weight: 600;
+}
+
+.papaya-price {
+    font-weight: 600;
+}
+
+.papaya-muted {
+    font-size: 0.85rem;
+    opacity: 0.6;
+}
+
+.papaya-number {
+    font-variant-numeric: tabular-nums;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+.papaya-actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.papaya-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 16px;
+    border-radius: 999px;
+    background: var(--papaya-orange);
+    color: #ffffff;
+    border: 1px solid var(--papaya-orange);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.papaya-button:hover {
+    background: var(--papaya-amber);
+    border-color: var(--papaya-amber);
+    color: #ffffff;
+    text-decoration: none;
+}
+
+.papaya-button-ghost {
+    background: transparent;
+    color: var(--papaya-orange);
+}
+
+.papaya-button-ghost:hover {
+    color: #ffffff;
+}
+
+.papaya-withdraw {
+    padding-top: 24px;
+    padding-bottom: 48px;
+}
+
+.papaya-callout {
+    border: 1px solid var(--papaya-divider);
+    border-radius: 14px;
+    padding: 14px 18px;
+    margin-bottom: 20px;
+    background: #ffffff;
+}
+
+.papaya-callout-muted {
+    background: #fffaf3;
+    border-color: rgba(242, 140, 40, 0.2);
+}
+
+.papaya-form .form-group label {
+    font-weight: 600;
+    margin-bottom: 6px;
+}
+
+.papaya-input {
+    border-radius: 10px;
+    border: 1px solid var(--papaya-divider);
+    padding: 10px 12px;
+}
+
+.papaya-input:focus {
+    border-color: var(--papaya-orange);
+    box-shadow: none;
+}
+
+.papaya-dashboard {
+    padding-top: 24px;
+    padding-bottom: 24px;
+}
+
+.papaya-wide {
+    padding-left: 0;
+    padding-right: 0;
+}
+
+@media (max-width: 991px) {
+    .papaya-wide {
+        padding-left: 0;
+        padding-right: 0;
+    }
+}
+
+.papaya-hero-card {
+    margin-bottom: 24px;
+}
+
+.papaya-card-body {
+    padding: 24px;
+}
+
+.papaya-dashboard .papaya-kpis {
+    padding-left: 12px;
+    padding-right: 12px;
+}
+
+.papaya-row {
+    margin-left: 0;
+    margin-right: 0;
+}
+
+.papaya-col {
+    padding-left: 8px;
+    padding-right: 8px;
+}
+
+.papaya-kpis {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.papaya-kpi {
+    font-size: 1.35rem;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+}
+
+@media (max-width: 991px) {
+    .papaya-card-body {
+        padding: 20px;
+    }
+}
+@media (max-width: 991px) {
+    .papaya-hero {
+        padding: 80px 0 32px;
+    }
+
+    .papaya-title {
+        font-size: 2rem;
+    }
+
+    .papaya-illustration {
+        margin-top: 24px;
+    }
+}

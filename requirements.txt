@@ -6,7 +6,6 @@ argon2-cffi-bindings==21.2.0
 arrow==1.2.3
 asttokens==2.2.1
 async-lru==2.0.4
-async-websocket-client==0.1.0
 asyncio==3.4.3
 attrs==23.1.0
 Babel==2.12.1
@@ -75,7 +74,7 @@ nbformat==5.9.2
 nest-asyncio==1.5.7
 notebook==7.0.1
 notebook_shim==0.2.3
-numpy==1.25.2
+numpy==1.26.4
 overrides==7.3.1
 packaging==23.1
 pandocfilters==1.5.0
@@ -99,7 +98,7 @@ python-json-logger==2.0.7
 python-socketio==5.8.0
 pytz==2023.3
 PyYAML==6.0.1
-pyzmq==24.0.1
+pyzmq==25.1.2
 qtconsole==5.4.3
 QtPy==2.3.1
 referencing==0.30.0
@@ -125,7 +124,7 @@ wcwidth==0.2.6
 webcolors==1.13
 webencodings==0.5.1
 websocket-client==1.6.1
-websockets==11.0.3
+websockets==10.4
 Werkzeug==2.3.6
 widgetsnbextension==4.0.8
 wrapt==1.15.0

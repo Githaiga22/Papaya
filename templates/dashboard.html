@@ -3,114 +3,153 @@
 {% block content %}
 <div id="flash-messages" style="position: fixed; top: 100px; left: 10px; z-index: 10000 !important;"></div>
 
-<div class="container-fluid my-4">
-  <div class="jumbotron text-center py-2" style="background: linear-gradient(90deg, #1e3c72 0%, #2a5298 100%); color: #ffffff;">
-    <h1 class="display-4" style="font-size: 2.5rem;">Welcome, {{ current_user.username }}!</h1>
-    <p class="lead" style="font-size: 1.15rem;">Your address: {{ current_user.id }}</p>
-    <p><a class="btn btn-danger btn-lg" href="{{ mm_url_for('logout') }}" role="button">Logout</a></p>
+<div class="container-fluid papaya-dashboard papaya-wide">
+  <div class="papaya-card papaya-hero-card">
+    <div class="papaya-card-body">
+      <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center">
+        <div>
+          <p class="papaya-eyebrow mb-2">Account Overview</p>
+          <h1 class="papaya-title mb-2">Welcome, {{ current_user.username }}!</h1>
+          <p class="papaya-muted mb-0">Wallet: {{ current_user.id }}</p>
+        </div>
+        <a class="papaya-button mt-3 mt-lg-0" href="{{ mm_url_for('logout') }}">Logout</a>
+      </div>
+    </div>
   </div>
 
-  <div class="row bg-light border border-secondary rounded p-3">
-    <div class="col">
-      <h4>Total Supplied: {{ "{:,.0f}".format(total_supplied_usd|float) }} USD</h4>
+  <div class="papaya-kpis">
+    <div class="papaya-card">
+      <div class="papaya-card-body">
+        <p class="papaya-muted mb-1">Total Supplied</p>
+        <div class="papaya-kpi">{{ "{:,.0f}".format(total_supplied_usd|float) }} USD</div>
+      </div>
     </div>
-    <div class="col">
-      <h4>Total Borrowed: {{ "{:,.0f}".format(total_borrowed_usd|float) }} USD</h4>
+    <div class="papaya-card">
+      <div class="papaya-card-body">
+        <p class="papaya-muted mb-1">Total Borrowed</p>
+        <div class="papaya-kpi">{{ "{:,.0f}".format(total_borrowed_usd|float) }} USD</div>
+      </div>
     </div>
-    <div class="col">
-      <h4>Net Assets: {{ "{:,.0f}".format(net_assets_usd|float) }} USD</h4>
+    <div class="papaya-card">
+      <div class="papaya-card-body">
+        <p class="papaya-muted mb-1">Net Assets</p>
+        <div class="papaya-kpi">{{ "{:,.0f}".format(net_assets_usd|float) }} USD</div>
+      </div>
     </div>
   </div>
-  
-  <div class="row">
-    <div class="col-md-6">
-      <h2 class="my-4" style="background: linear-gradient(90deg, #1e3c72 0%, #2a5298 100%); color: #ffffff; padding: 10px; border-radius: 5px;">
-        Supplied Assets
-        <a class="btn btn-outline-success float-right" href="{{ mm_url_for('deposit', asset='EUR') }}">Deposit</a> <!-- Added float-right class -->
-      </h2>      
-      <table class="table table-striped custom-table">
-        <thead>
-          <tr>
-            <th scope="col" style="width: 20%;">Asset</th>
-            <th scope="col" style="width: 20%;">Balance</th>
-            <th scope="col" style="width: 20%;">Current APR</th>
-            <th scope="col" style="width: 20%;">Accrued Interest</th>
-            <th scope="col" style="width: 20%;">Withdraw</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for asset, balance in total_assets.items() %}
-          <tr>
-            <td>{{ asset }}</td>
-            <td>{{ "{:,.2f}".format(balance|float) }}</td>
-            <td>{{ "{:,.2f}".format(apy[asset]|float) }}%</td>
-            <td>{{ "{:,.4f}".format(supplied_yield[asset]|float) }}</td>
-            <td><a class="btn btn-outline-primary" href="{{ mm_url_for('withdraw', asset=asset) }}">Withdraw</a></td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
+
+  <div class="row papaya-row">
+    <div class="col-12 col-lg-6 papaya-col">
+      <div class="papaya-card">
+        <div class="papaya-card-header d-flex align-items-center justify-content-between">
+          <h2 class="papaya-section-title">Supplied Assets</h2>
+          <a class="papaya-button papaya-button-ghost" href="{{ mm_url_for('deposit', asset='EUR') }}">Deposit</a>
+        </div>
+        <div class="table-responsive">
+          <table class="table papaya-table papaya-table-compact papaya-table-stretch">
+            <thead>
+              <tr>
+                <th scope="col">Asset</th>
+                <th scope="col">Balance</th>
+                <th scope="col">Current APR</th>
+                <th scope="col">Accrued Interest</th>
+                <th scope="col">Withdraw</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for asset, balance in total_assets.items() %}
+              <tr>
+                <td class="papaya-market">
+                  <span class="papaya-asset-icon" aria-hidden="true">{{ asset[0] }}</span>
+                  <span class="papaya-asset-name">{{ asset }}</span>
+                </td>
+                <td class="papaya-number">{{ "{:,.2f}".format(balance|float) }}</td>
+                <td class="papaya-number">{{ "{:,.2f}".format(apy[asset]|float) }}%</td>
+                <td class="papaya-number">{{ "{:,.4f}".format(supplied_yield[asset]|float) }}</td>
+                <td><a class="papaya-button papaya-button-ghost" href="{{ mm_url_for('withdraw', asset=asset) }}">Withdraw</a></td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
-    <div class="col-md-6">
-      <h2 class="my-4" style="background: linear-gradient(90deg, #1e3c72 0%, #2a5298 100%); color: #ffffff; padding: 10px; border-radius: 5px;">Borrowed Assets</h2>
-      <table class="table table-striped custom-table">
-        <thead>
-          <tr>
-            <th scope="col" style="width: 12%;">Asset</th>
-            <th scope="col" style="width: 18%;">Borrowed</th>
-            <th scope="col" style="width: 18%;">Accrued Interest</th>
-            <th scope="col" style="width: 25%;">Pay Back</th>
-            <th scope="col" style="width: 14%;">Borrow</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for asset, balance in borrowed_assets.items() %}
-          <tr>
-            <td>{{ asset }}</td>
-            <td>{{ "{:,.2f}".format(balance|float) }}</td>
-            <td>{{ "{:,.4f}".format(borrowed_interest[asset]|float) }}</td>
-            <td><a class="btn btn-outline-danger" href="{{ mm_url_for('payback', asset=asset) }}">Pay Back</a></td>
-            <td><a class="btn btn-outline-success" href="{{ mm_url_for('borrow', asset=asset) }}">Borrow</a></td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
+    <div class="col-12 col-lg-6 papaya-col">
+      <div class="papaya-card">
+        <div class="papaya-card-header">
+          <h2 class="papaya-section-title">Borrowed Assets</h2>
+        </div>
+        <div class="table-responsive">
+          <table class="table papaya-table papaya-table-compact papaya-table-stretch">
+            <thead>
+              <tr>
+                <th scope="col">Asset</th>
+                <th scope="col">Borrowed</th>
+                <th scope="col">Accrued Interest</th>
+                <th scope="col">Pay Back</th>
+                <th scope="col">Borrow</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for asset, balance in borrowed_assets.items() %}
+              <tr>
+                <td class="papaya-market">
+                  <span class="papaya-asset-icon" aria-hidden="true">{{ asset[0] }}</span>
+                  <span class="papaya-asset-name">{{ asset }}</span>
+                </td>
+                <td class="papaya-number">{{ "{:,.2f}".format(balance|float) }}</td>
+                <td class="papaya-number">{{ "{:,.4f}".format(borrowed_interest[asset]|float) }}</td>
+                <td><a class="papaya-button papaya-button-ghost" href="{{ mm_url_for('payback', asset=asset) }}">Pay Back</a></td>
+                <td><a class="papaya-button" href="{{ mm_url_for('borrow', asset=asset) }}">Borrow</a></td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
   </div>
 </div>
-<div class="row">
-  <div class="col-md-12">
-    <h2 class="my-4" style="background: linear-gradient(90deg, #1e3c72 0%, #2a5298 100%); color: #ffffff; padding: 10px; border-radius: 5px;">Liquidations</h2>
-    <div class="table-responsive">
-      <table class="table table-striped custom-table">
-        <thead>
-          <tr>
-            <th>Asset</th>
-            <th>Amount</th>
-            <th>Date</th>
-          </tr>
-        </thead>
-        {% if liquidations %}
-        <tbody>
-          {% for liquidation in liquidations %}
-          <tr>
-            <td>{{ liquidation[1] }}</td>
-            <td> {{ "{:,.2f}".format(liquidation[2]|float) }}</td>
-            <td>{{ liquidation[3] }}</td>
-          </tr>
-          {% endfor %}
-        </tbody>
-        {% else %}
+<section class="papaya-section">
+  <div class="container">
+    <div class="papaya-card">
+      <div class="papaya-card-header">
+        <h2 class="papaya-section-title">Liquidations</h2>
+      </div>
+      <div class="table-responsive">
+        <table class="table papaya-table papaya-table-compact">
+          <thead>
+            <tr>
+              <th>Asset</th>
+              <th>Amount</th>
+              <th>Date</th>
+            </tr>
+          </thead>
+          {% if liquidations %}
+          <tbody>
+            {% for liquidation in liquidations %}
+            <tr>
+              <td class="papaya-market">
+                <span class="papaya-asset-icon" aria-hidden="true">{{ liquidation[1][0] }}</span>
+                <span class="papaya-asset-name">{{ liquidation[1] }}</span>
+              </td>
+              <td class="papaya-number">{{ "{:,.2f}".format(liquidation[2]|float) }}</td>
+              <td class="papaya-number">{{ liquidation[3] }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+          {% else %}
           <tbody>
             <tr>
-              <td colspan="3" class="text-center">If there is a liquidation event, it will show up here.</td>
+              <td colspan="3" class="text-center papaya-muted">If there is a liquidation event, it will show up here.</td>
             </tr>
           </tbody>
-        {% endif %}
-      </table>
+          {% endif %}
+        </table>
+      </div>
     </div>
   </div>
-</div>
+</section>
 <audio id="coinSound" src="{{ mm_url_for('static', filename='audio/coin.wav') }}" preload="auto"></audio>
 
 <!-- JavaScript -->
