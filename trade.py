@@ -1,4 +1,5 @@
 import json
+import os
 from xrpl.models import XRP, IssuedCurrency
 from xrpl.utils import xrp_to_drops
 from xrpl.clients import JsonRpcClient
@@ -8,8 +9,33 @@ from xrpl.transaction import submit
 from xrpl.asyncio.transaction import autofill_and_sign
 from xrpl.transaction import submit_and_wait, sign_and_submit
 
-# Load a wallet from a file
+# Load a wallet from a file, create if doesn't exist
 def load_wallet_from_file(filename):
+    # If wallet file doesn't exist, create a new one
+    if not os.path.exists(filename):
+        print(f"Wallet file {filename} not found, creating new wallet...")
+
+        # Create wallets directory if it doesn't exist
+        os.makedirs(os.path.dirname(filename), exist_ok=True)
+
+        # Generate new wallet
+        new_wallet = Wallet.create()
+
+        wallet_dict = {
+            'public_key': new_wallet.public_key,
+            'private_key': new_wallet.private_key,
+            'classic_address': new_wallet.classic_address,
+            'seed': new_wallet.seed
+        }
+
+        # Save to file
+        with open(filename, 'w') as f:
+            json.dump(wallet_dict, f, indent=2)
+
+        print(f"Created new wallet: {new_wallet.classic_address}")
+        return new_wallet  # Return Wallet object, not dict
+
+    # Load existing wallet
     with open(filename, 'r') as f:
         wallet_dict = json.load(f)
     print(wallet_dict)
