@@ -1,0 +1,155 @@
+{% extends "base.html" %}
+
+{% block title %}Swap{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <!-- Flash messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <h2 class="mb-4" style="background: linear-gradient(90deg, #1e3c72 0%, #2a5298 100%); color: #ffffff; padding: 15px; border-radius: 5px;">
+        💱 Swap Assets - Real-Time Rates
+    </h2>
+
+    <div class="row">
+        <!-- Swap Form -->
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h5>Execute Swap</h5>
+                </div>
+                <div class="card-body">
+                    <form method="post">
+                        {{ form.hidden_tag() }}
+
+                        <div class="form-group">
+                            <label for="from_asset">From Asset:</label>
+                            {{ form.from_asset(class="form-control", id="from_asset", onchange="updateEstimatedRate()") }}
+                        </div>
+
+                        <div class="form-group">
+                            <label for="amount">Amount:</label>
+                            {{ form.amount(class="form-control", id="amount", step="0.000001", oninput="updateEstimatedRate()") }}
+                            <small class="form-text text-muted" id="balance_display"></small>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="to_asset">To Asset:</label>
+                            {{ form.to_asset(class="form-control", id="to_asset", onchange="updateEstimatedRate()") }}
+                        </div>
+
+                        <div class="alert alert-info" id="estimated_output">
+                            <strong>Estimated Output:</strong> <span id="output_amount">-</span>
+                            <br>
+                            <small><strong>Rate:</strong> <span id="exchange_rate">-</span></small>
+                            <br>
+                            <small class="text-muted">Fee: 0.3%</small>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary btn-block">{{ form.submit.label }}</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Current Rates -->
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header bg-success text-white">
+                    <h5>📊 Live Prices (USD)</h5>
+                </div>
+                <div class="card-body">
+                    <table class="table table-sm">
+                        <thead>
+                            <tr>
+                                <th>Asset</th>
+                                <th>Price (USD)</th>
+                                <th>Your Balance</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for asset, rate in exchange_rates.items() %}
+                            <tr>
+                                <td><strong>{{ asset }}</strong></td>
+                                <td>${{ "%.6f"|format(rate) }}</td>
+                                <td>{{ "%.6f"|format(user_balances.get(asset, 0)) }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    <small class="text-muted">Prices updated in real-time via CoinGecko API</small>
+                </div>
+            </div>
+
+            <div class="card mt-3">
+                <div class="card-header bg-info text-white">
+                    <h5>ℹ️ How It Works</h5>
+                </div>
+                <div class="card-body">
+                    <ul class="mb-0" style="font-size: 0.9rem;">
+                        <li>Select asset to swap <strong>from</strong></li>
+                        <li>Enter amount you want to swap</li>
+                        <li>Select asset to swap <strong>to</strong></li>
+                        <li>Rate is calculated using real-time market prices</li>
+                        <li>0.3% fee applies to all swaps</li>
+                        <li>Transaction completes instantly</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Pass exchange rates and user balances to JavaScript
+const exchangeRates = {{ exchange_rates|tojson }};
+const userBalances = {{ user_balances|tojson }};
+
+function updateEstimatedRate() {
+    const fromAsset = document.getElementById('from_asset').value;
+    const toAsset = document.getElementById('to_asset').value;
+    const amount = parseFloat(document.getElementById('amount').value) || 0;
+
+    // Update balance display
+    const balance = userBalances[fromAsset] || 0;
+    document.getElementById('balance_display').textContent =
+        `Available: ${balance.toFixed(6)} ${fromAsset}`;
+
+    // Calculate estimated output
+    if (fromAsset && toAsset && amount > 0 && fromAsset !== toAsset) {
+        const fromRate = exchangeRates[fromAsset] || 1.0;
+        const toRate = exchangeRates[toAsset] || 1.0;
+
+        // Convert to USD then to target asset
+        const usdValue = amount * fromRate;
+        let outputAmount = usdValue / toRate;
+
+        // Apply 0.3% fee
+        const fee = outputAmount * 0.003;
+        outputAmount = outputAmount - fee;
+
+        // Calculate exchange rate
+        const rate = outputAmount / amount;
+
+        // Update display
+        document.getElementById('output_amount').textContent =
+            `${outputAmount.toFixed(6)} ${toAsset}`;
+        document.getElementById('exchange_rate').textContent =
+            `1 ${fromAsset} = ${rate.toFixed(6)} ${toAsset}`;
+    } else {
+        document.getElementById('output_amount').textContent = '-';
+        document.getElementById('exchange_rate').textContent = '-';
+    }
+}
+
+// Update on page load
+updateEstimatedRate();
+</script>
+
+{% endblock %}

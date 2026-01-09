@@ -1,0 +1,126 @@
+{% extends "base.html" %}
+
+{% block title %}Transaction History{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <!-- Flash messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">{{ message | safe }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <h2 class="mb-4" style="background: linear-gradient(90deg, #1e3c72 0%, #2a5298 100%); color: #ffffff; padding: 15px; border-radius: 5px;">
+        📜 Transaction History
+    </h2>
+
+    <div class="card">
+        <div class="card-header bg-primary text-white">
+            <h5>Your Transaction Activity</h5>
+        </div>
+        <div class="card-body">
+            {% if transactions %}
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Time</th>
+                                <th>Type</th>
+                                <th>Details</th>
+                                <th>Amount</th>
+                                <th>Status</th>
+                                <th>Transaction Hash</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for tx in transactions %}
+                            <tr>
+                                <td>
+                                    <small>{{ tx.timestamp }}</small>
+                                </td>
+                                <td>
+                                    {% if tx.tx_type == 'swap' %}
+                                        <span class="badge badge-info">🔄 Swap</span>
+                                    {% elif tx.tx_type == 'deposit' %}
+                                        <span class="badge badge-success">➕ Deposit</span>
+                                    {% elif tx.tx_type == 'withdraw' %}
+                                        <span class="badge badge-warning">➖ Withdraw</span>
+                                    {% elif tx.tx_type == 'borrow' %}
+                                        <span class="badge badge-secondary">📤 Borrow</span>
+                                    {% elif tx.tx_type == 'repay' %}
+                                        <span class="badge badge-primary">📥 Repay</span>
+                                    {% elif tx.tx_type == 'liquidation' %}
+                                        <span class="badge badge-danger">⚠️ Liquidation</span>
+                                    {% else %}
+                                        <span class="badge badge-light">{{ tx.tx_type }}</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if tx.tx_type == 'swap' %}
+                                        {{ tx.from_asset }} → {{ tx.to_asset }}
+                                    {% else %}
+                                        {{ tx.asset or 'N/A' }}
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if tx.tx_type == 'swap' %}
+                                        {{ "%.6f"|format(tx.amount) }} {{ tx.from_asset }}
+                                    {% else %}
+                                        {{ "%.6f"|format(tx.amount or 0) }} {{ tx.asset or '' }}
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if tx.status == 'completed' %}
+                                        <span class="text-success">✅ Completed</span>
+                                    {% elif tx.status == 'pending' %}
+                                        <span class="text-warning">⏳ Pending</span>
+                                    {% elif tx.status == 'failed' %}
+                                        <span class="text-danger">❌ Failed</span>
+                                    {% else %}
+                                        {{ tx.status }}
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <small>
+                                        <code>{{ tx.tx_hash[:16] }}...</code>
+                                        {% if tx.explorer_link %}
+                                        <br>
+                                        <a href="{{ tx.explorer_link }}" target="_blank" class="btn btn-sm btn-outline-primary mt-1">
+                                            View on Explorer 🔗
+                                        </a>
+                                        {% endif %}
+                                    </small>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <div class="alert alert-info">
+                    <strong>No transactions yet!</strong>
+                    <p class="mb-0">Start by getting demo tokens, swapping, or borrowing to see your transaction history here.</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="card mt-3">
+        <div class="card-header bg-info text-white">
+            <h5>ℹ️ About Transaction Hashes</h5>
+        </div>
+        <div class="card-body">
+            <ul class="mb-0" style="font-size: 0.9rem;">
+                <li><strong>Real XRP transactions</strong> will show actual XRPL testnet transaction hashes</li>
+                <li><strong>Demo transactions</strong> (swaps, demo tokens) show generated hashes for tracking purposes</li>
+                <li>Click "View on Explorer" to see real XRP transactions on the blockchain</li>
+                <li>Demo transactions won't appear on the explorer (they're database-only)</li>
+                <li>This is a hackathon demo - production would use real blockchain transactions for all operations</li>
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}

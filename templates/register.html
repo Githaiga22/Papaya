@@ -1,0 +1,127 @@
+{% extends "base.html" %}
+
+{% block title %}Register{% endblock %}
+
+{% block content %}
+    <div class="container mt-5">
+        {% if registration_complete %}
+            <!-- SUCCESS - Show wallet credentials -->
+            <div class="row justify-content-center">
+                <div class="col-12 col-md-8">
+                    <div class="alert alert-success" role="alert">
+                        <h4 class="alert-heading">✅ Registration Successful!</h4>
+                        <p>Welcome <strong>{{ username }}</strong>! Your account has been created.</p>
+                    </div>
+
+                    <div class="card border-primary mb-3">
+                        <div class="card-header bg-primary text-white">
+                            <h5>🔑 Your XRPL Testnet Wallet Credentials</h5>
+                        </div>
+                        <div class="card-body">
+                            <p><strong>⚠️ IMPORTANT: Save these credentials! You'll need them to recover your wallet.</strong></p>
+
+                            <div class="mb-3">
+                                <label class="font-weight-bold">Wallet Address:</label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" value="{{ wallet_address }}" id="walletAddress" readonly>
+                                    <div class="input-group-append">
+                                        <button class="btn btn-outline-secondary" type="button" onclick="copyToClipboard('walletAddress')">Copy</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="font-weight-bold">Wallet Secret (Private Key):</label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" value="{{ wallet_seed }}" id="walletSeed" readonly>
+                                    <div class="input-group-append">
+                                        <button class="btn btn-outline-secondary" type="button" onclick="copyToClipboard('walletSeed')">Copy</button>
+                                    </div>
+                                </div>
+                                <small class="text-danger">⚠️ Never share your secret with anyone!</small>
+                            </div>
+
+                            {% if funded %}
+                            <div class="alert alert-info" role="alert">
+                                ✅ Your wallet has been funded with <strong>~100 Test XRP</strong> from the XRPL Testnet Faucet!
+                            </div>
+                            {% else %}
+                            <div class="alert alert-warning" role="alert">
+                                ⚠️ Automatic funding failed. You can manually fund your wallet at:<br>
+                                <a href="https://faucet.altnet.rippletest.net/accounts" target="_blank">XRPL Testnet Faucet</a>
+                            </div>
+                            {% endif %}
+
+                            <div class="alert alert-secondary" role="alert">
+                                <strong>What's Next?</strong>
+                                <ul class="mb-0">
+                                    <li>Save your wallet credentials in a safe place</li>
+                                    <li>Login with your username and password</li>
+                                    <li>Start using Papaya to lend, borrow, and swap!</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="text-center mt-4">
+                        <a href="{{ mm_url_for('login') }}" class="btn btn-primary btn-lg">Login Now</a>
+                    </div>
+                </div>
+            </div>
+
+            <script>
+            function copyToClipboard(elementId) {
+                var copyText = document.getElementById(elementId);
+                copyText.select();
+                copyText.setSelectionRange(0, 99999);
+                document.execCommand("copy");
+                alert("Copied: " + copyText.value);
+            }
+            </script>
+
+        {% else %}
+            <!-- REGISTRATION FORM -->
+            <div class="row justify-content-center">
+                <div class="col-12 col-md-6">
+                    <h1 class="mb-3">Register</h1>
+
+                    {% with messages = get_flashed_messages() %}
+                        {% if messages %}
+                            {% for message in messages %}
+                                <div class="alert alert-warning">{{ message }}</div>
+                            {% endfor %}
+                        {% endif %}
+                    {% endwith %}
+
+                    <div class="card">
+                        <div class="card-body">
+                            <form method="post">
+                                <div class="form-group mb-3">
+                                    <label for="username">Username</label>
+                                    <input type="text" id="username" name="username" class="form-control" required>
+                                </div>
+                                <div class="form-group mb-3">
+                                    <label for="password">Password</label>
+                                    <input type="password" id="password" name="password" class="form-control" required>
+                                </div>
+                                <button type="submit" class="btn btn-primary btn-block">Create Account</button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="alert alert-info mt-3" role="alert">
+                        <strong>🎉 Simplified Registration!</strong>
+                        <ul class="mb-0">
+                            <li>We'll automatically create an XRPL testnet wallet for you</li>
+                            <li>Fund it with test XRP from the faucet</li>
+                            <li>You'll receive your wallet credentials after registration</li>
+                            <li>No blockchain knowledge required!</li>
+                        </ul>
+                    </div>
+
+                    <p class="mt-3">Already have an account? <a href="{{ mm_url_for('login') }}">Login here</a></p>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}
